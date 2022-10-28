@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 struct game
 {
@@ -6,7 +8,10 @@ struct game
 	int col;
 	int rowCur;
 	int colCur;
+	int round;
+	int wrap;
 	bool **grid;
+	bool **orig;
 };
 struct mouse
 {
@@ -22,7 +27,11 @@ struct mouse
 void hello();
 void init_game(struct game *g, int r, int c);
 void read_file(FILE *fp, struct game *g);
-void draw(struct game *g, struct mouse *m);
+void draw(struct game *g, struct mouse *m, int w, int h, int exw, bool play, TTF_Font *f, SDL_Renderer *renderer);
 
-// void next_gen();
+void next_gen(struct game *g);
+bool next_alive(struct game *g, int r, int c);
+bool next_alive_wrapped(struct game *g, int r, int c);
 // void prev_gen();
+void reset_game(struct game *g);
+void free_game(struct game *g);
