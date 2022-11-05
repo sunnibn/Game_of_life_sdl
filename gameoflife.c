@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	m.press = false;
 	m.click = false;
 	// file input
-	fp = fopen("input1.txt", "r");
+	fp = fopen("input2.txt", "r");
 	if (fp == NULL) {
 		fprintf(stderr, "failed to load input file.\n");
 		exit(1);
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	// sdl initialize
 	SDL_Init(SDL_INIT_VIDEO);
 	window = SDL_CreateWindow(
-		"ASCII Art Editor",
+		"Game of Life Player",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         winW+extraW, winH,
@@ -85,6 +85,9 @@ int main(int argc, char *argv[])
 							play = false;
 							break;
 						case SDLK_o:
+							break;
+						case SDLK_w:
+							g.wrap = !g.wrap;
 							break;
 					}
 				}

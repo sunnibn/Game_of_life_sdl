@@ -37,7 +37,6 @@ void read_file(FILE *fp, struct game *g)
 	char c;
 	int inChar;
 	int i = 0;
-	int j = 0;
 	int row = 0;
 	int col = 0;
 	bool colget = false;
@@ -123,13 +122,6 @@ void read_file(FILE *fp, struct game *g)
 			i++;
 		}
 	}
-	printf("check %d %d \n", row, col);
-	for (i=0; i<row; i++) {
-		for (j=0; j<col; j++) {
-			printf("%d", g->grid[i][j]);
-		}
-		printf("\n");
-	}
 	g->row = row;
 	g->col = col;
 }
@@ -151,6 +143,15 @@ void draw(struct game *g, struct mouse *m, int w, int h, int exw, bool play, TTF
 	char numstr[10];
 	// form surf
 	surf = SDL_CreateRGBSurface(0, w,h, 32, 0,0,0,0);
+	if (g->row > g->col) {
+		ws = hs;
+		rect.x = ws*g->col, rect.y = 0, rect.w = 2, rect.h = h;
+		SDL_FillRect(surf, &rect, SDL_MapRGBA(surf->format,0,200,0,255));
+	} else if (g->row < g->col) {
+		hs = ws;
+		rect.x = 0, rect.y = hs*g->row, rect.w = w, rect.h = 2;
+		SDL_FillRect(surf, &rect, SDL_MapRGBA(surf->format,0,200,0,255));
+	}
 	for (i=0; i<g->row; i++) {
 		for (j=0; j<g->col; j++) {
 			if (g->grid[i][j]) {
@@ -207,6 +208,15 @@ void draw(struct game *g, struct mouse *m, int w, int h, int exw, bool play, TTF
 	SDL_FreeSurface(tempSurf);
 	//reset
 	tempSurf = TTF_RenderUTF8_Blended(f, "[R] reset", fontColor);
+	rect.x = 2, rect.y += rect.h, rect.w = tempSurf->w, rect.h = tempSurf->h;
+	SDL_BlitSurface(tempSurf, NULL, sideSurf, &rect);
+	SDL_FreeSurface(tempSurf);
+	//wrapped
+	if (g->wrap) {
+		tempSurf = TTF_RenderUTF8_Blended(f, "[W] wrapped [v]", fontColor);
+	} else {
+		tempSurf = TTF_RenderUTF8_Blended(f, "[W] wrapped [ ]", fontColor);
+	}
 	rect.x = 2, rect.y += rect.h, rect.w = tempSurf->w, rect.h = tempSurf->h;
 	SDL_BlitSurface(tempSurf, NULL, sideSurf, &rect);
 	SDL_FreeSurface(tempSurf);
