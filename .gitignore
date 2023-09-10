@@ -1,4 +1,2 @@
 *.o
-*.exe
-*.sublime-project
-*.sublime-workspace
+# *.exe
